@@ -1,1 +1,89 @@
-<p>pais-list works!</p>
+<h2>Módulo País</h2>
+
+<div style="display:flex; gap:12px; align-items:center; margin-bottom: 12px;">
+  <mat-form-field appearance="outline" style="width: 320px;">
+    <mat-label>Buscar país</mat-label>
+    <input
+      #txtBuscar
+      matInput
+      placeholder="Ej: CHILE..."
+      (keyup.enter)="buscar(txtBuscar.value)"
+    />
+    <mat-hint>Presiona Enter o usa el botón Buscar</mat-hint>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="buscar(txtBuscar.value)" [disabled]="isLoading">
+    Buscar
+  </button>
+
+  <button mat-button (click)="txtBuscar.value=''; limpiar()" [disabled]="isLoading">
+    Limpiar
+  </button>
+
+  <span style="flex:1 1 auto;"></span>
+
+  <button mat-raised-button color="primary" routerLink="/pais/nuevo">
+    Crear
+  </button>
+</div>
+
+<div class="table-wrapper" style="margin-top: 12px; overflow:auto;">
+  <div class="loading-overlay" *ngIf="isLoading" style="display:flex; gap:12px; align-items:center; padding:12px;">
+    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+    <div class="loading-text">Cargando...</div>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="matData"
+    matSort
+    class="mat-elevation-z2"
+    style="width: 100%; min-width: 900px;"
+  >
+    <!-- ID -->
+    <ng-container matColumnDef="PA_ID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let r">{{ r.PA_ID }}</td>
+    </ng-container>
+
+    <!-- NOMBRE -->
+    <ng-container matColumnDef="PA_NOMBRE">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let r">{{ r.PA_NOMBRE }}</td>
+    </ng-container>
+
+    <!-- FECHA -->
+    <ng-container matColumnDef="PA_FECHA_CREACION">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Creación</th>
+      <td mat-cell *matCellDef="let r">{{ r.PA_FECHA_CREACION | date:'yyyy-MM-dd HH:mm' }}</td>
+    </ng-container>
+
+    <!-- ACCIONES -->
+    <ng-container matColumnDef="ACCIONES">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let r">
+        <button mat-button color="primary" [routerLink]="['/pais/editar', r.PA_ID]">Editar</button>
+        <button mat-button color="warn" (click)="eliminar(r.PA_ID)">Eliminar</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length" style="padding: 16px;">
+        No hay datos para mostrar.
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>
+
+<div style="margin-top: 12px;">
+  <a routerLink="/home" style="text-decoration:none;">← Volver al Home</a>
+</div>

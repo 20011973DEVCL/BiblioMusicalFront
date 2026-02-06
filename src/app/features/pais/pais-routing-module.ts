@@ -7,7 +7,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'listar', pathMatch: 'full' },
   { path: 'listar', component: PaisList },
   { path: 'nuevo', component: PaisForm },
+  { path: 'editar/:id', component: PaisForm },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
