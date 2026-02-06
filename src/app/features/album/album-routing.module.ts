@@ -4,9 +4,9 @@ import { AlbumListComponent } from './pages/album-list/album-list.component';
 import { AlbumFormComponent } from './pages/album-form/album-form.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'listar', pathMatch: 'full' },
   { path: 'listar', component: AlbumListComponent },
   { path: 'nuevo', component: AlbumFormComponent },
-  { path: ':id/editar', component: AlbumFormComponent },
 ];
 
 @NgModule({
