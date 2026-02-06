@@ -9,9 +9,9 @@ import { Album } from '../../models/album.model';
 @Component({
   selector: 'app-album-list',
   standalone: false,
-  templateUrl: './album-list.component.html',
+  templateUrl: './album-list.html',
 })
-export class AlbumListComponent implements AfterViewInit {
+export class AlbumList implements AfterViewInit {
   displayedColumns = ['id', 'nombre', 'anio', 'acciones'];
   dataSource = new MatTableDataSource<Album>([]);
 

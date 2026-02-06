@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AlbumRoutingModule } from './album-routing.module';
-import { AlbumListComponent } from './pages/album-list/album-list.component';
-import { AlbumFormComponent } from './pages/album-form/album-form.component';
+import { AlbumList } from './pages/album-list/album-list';
+import { AlbumForm } from './pages/album-form/album-form';
 
 @NgModule({
-  declarations: [AlbumListComponent, AlbumFormComponent],
-  imports: [SharedModule, AlbumRoutingModule],
+  declarations: [AlbumList, AlbumForm],
+  imports: [SharedModule, AlbumRoutingModule]
 })
 export class AlbumModule {}

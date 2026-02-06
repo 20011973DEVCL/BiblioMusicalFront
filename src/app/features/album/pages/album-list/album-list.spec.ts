@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlbumFormComponent } from './album-form.component';
+import { AlbumList } from './album-list';
 
-describe('AlbumFormComponent', () => {
-  let component: AlbumFormComponent;
-  let fixture: ComponentFixture<AlbumFormComponent>;
+describe('AlbumList', () => {
+  let component: AlbumList;
+  let fixture: ComponentFixture<AlbumList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AlbumFormComponent]
+      declarations: [AlbumList]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AlbumFormComponent);
+    fixture = TestBed.createComponent(AlbumList);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

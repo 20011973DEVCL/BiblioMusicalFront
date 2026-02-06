@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlbumService } from '../../services/album.service';
 import { Album } from '../../models/album.model';
 
-type AlbumForm = {
+type AlbumFormType = {
   nombre: FormControl<string>;
   anio: FormControl<number | null>;
 };
@@ -13,11 +13,11 @@ type AlbumForm = {
 @Component({
   selector: 'app-album-form',
   standalone: false,
-  templateUrl: './album-form.component.html',
+  templateUrl: './album-form.html',
 })
-export class AlbumFormComponent {
+export class AlbumForm {
   id?: number;
-  form: FormGroup<AlbumForm>;
+  form: FormGroup<AlbumFormType>;
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +26,7 @@ export class AlbumFormComponent {
     private svc: AlbumService,
     private snack: MatSnackBar
   ) {
-    this.form = this.fb.group<AlbumForm>({
+    this.form = this.fb.group<AlbumFormType>({
       nombre: this.fb.nonNullable.control('', [Validators.required, Validators.maxLength(200)]),
       anio: this.fb.control<number | null>(null),
     });
