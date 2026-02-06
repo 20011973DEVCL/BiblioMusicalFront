@@ -6,12 +6,12 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AlbumService {
-  private readonly baseUrl = `${environment.apiUrl}/album`;
+  private readonly baseUrl = `${environment.apiUrl}/api/album`;
 
   constructor(private http: HttpClient) {}
 
   listar(): Observable<Album[]> {
-    return this.http.get<Album[]>(`${this.baseUrl}`);
+    return this.http.get<Album[]>(this.baseUrl);
   }
 
   obtener(id: number): Observable<Album> {
@@ -19,7 +19,7 @@ export class AlbumService {
   }
 
   crear(payload: Partial<Album>): Observable<Album> {
-    return this.http.post<Album>(`${this.baseUrl}`, payload);
+    return this.http.post<Album>(this.baseUrl, payload);
   }
 
   actualizar(id: number, payload: Partial<Album>): Observable<void> {

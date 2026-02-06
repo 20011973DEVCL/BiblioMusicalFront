@@ -42,6 +42,7 @@ export class PaisList implements AfterViewInit {
   }
 
   cargar(): void {
+    debugger;
     this.isLoading = true;
     this.paisService.listar().subscribe({
       next: (rows) => {
