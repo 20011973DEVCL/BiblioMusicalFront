@@ -7,9 +7,8 @@ import { PaisService } from '../../services/pais.service';
 
 
 export type PaisRow = {
-  PA_ID: number;
-  PA_NOMBRE: string;
-  PA_FECHA_CREACION?: string | Date | null;
+  idPais: number;
+  nombre: string;
 };
 
 @Component({
@@ -19,7 +18,7 @@ export type PaisRow = {
   styleUrls: ['./pais-list.scss'],
 })
 export class PaisList implements AfterViewInit {
-  displayedColumns: string[] = ['PA_ID', 'PA_NOMBRE', 'PA_FECHA_CREACION', 'ACCIONES'];
+  displayedColumns: string[] = ['idPais', 'nombre', 'ACCIONES'];
 
   matData = new MatTableDataSource<PaisRow>([]);
   isLoading = false;
@@ -64,7 +63,7 @@ export class PaisList implements AfterViewInit {
       return;
     }
     this.matData.data = this.cache.filter(x =>
-      (x.PA_NOMBRE ?? '').toUpperCase().includes(q)
+      (x.nombre ?? '').toUpperCase().includes(q)
     );
   }
 

@@ -41,29 +41,23 @@
     style="width: 100%; min-width: 900px;"
   >
     <!-- ID -->
-    <ng-container matColumnDef="IdPais">
+    <ng-container matColumnDef="idPais">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-      <td mat-cell *matCellDef="let r">{{ r.IdPais }}</td>
+      <td mat-cell *matCellDef="let r">{{ r.idPais }}</td>
     </ng-container>
 
     <!-- NOMBRE -->
-    <ng-container matColumnDef="Nombre">
+    <ng-container matColumnDef="nombre">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-      <td mat-cell *matCellDef="let r">{{ r.Nombre }}</td>
-    </ng-container>
-
-    <!-- FECHA -->
-    <ng-container matColumnDef="PA_FECHA_CREACION">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Creación</th>
-      <td mat-cell *matCellDef="let r">{{ r.PA_FECHA_CREACION | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td mat-cell *matCellDef="let r">{{ r.nombre }}</td>
     </ng-container>
 
     <!-- ACCIONES -->
     <ng-container matColumnDef="ACCIONES">
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let r">
-        <button mat-button color="primary" [routerLink]="['/pais/editar', r.PA_ID]">Editar</button>
-        <button mat-button color="warn" (click)="eliminar(r.PA_ID)">Eliminar</button>
+        <button mat-button color="primary" [routerLink]="['/pais/editar', r.idPais]">Editar</button>
+        <button mat-button color="warn" (click)="eliminar(r.idPais)">Eliminar</button>
       </td>
     </ng-container>
 
