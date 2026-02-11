@@ -1,1 +1,44 @@
-<p>pais-form works!</p>
+<h2>{{ isEdit ? 'Editar País' : 'Nuevo País' }}</h2>
+
+<div class="form-wrapper">
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Nombre</mat-label>
+    <input
+      matInput
+      [formControl]="form.controls.nombre"
+      placeholder="Ej: CHILE"
+      autocomplete="off"
+    />
+
+    <mat-hint>Máx. 150 caracteres</mat-hint>
+
+    <mat-error *ngIf="form.controls.nombre.hasError('required')">
+      El nombre es obligatorio
+    </mat-error>
+    <mat-error *ngIf="form.controls.nombre.hasError('maxlength')">
+      Máximo 150 caracteres
+    </mat-error>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="guardar()" [disabled]="isLoading">
+      Guardar
+    </button>
+
+    <button mat-button (click)="cancelar()" [disabled]="isLoading">
+      Cancelar
+    </button>
+
+    <span class="spacer"></span>
+
+    <mat-progress-spinner
+      *ngIf="isLoading"
+      mode="indeterminate"
+      diameter="28"
+    ></mat-progress-spinner>
+  </div>
+
+  <div class="back-link">
+    <a routerLink="/pais" style="text-decoration:none;">← Volver al Listado</a>
+  </div>
+</div>

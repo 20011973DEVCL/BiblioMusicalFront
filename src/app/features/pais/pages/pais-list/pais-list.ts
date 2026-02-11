@@ -2,9 +2,8 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 import { PaisService } from '../../services/pais.service';
-
 
 export type PaisRow = {
   idPais: number;
@@ -28,10 +27,7 @@ export class PaisList implements AfterViewInit {
 
   private cache: PaisRow[] = [];
 
-  constructor(
-    private paisService: PaisService,
-    private snack: MatSnackBar
-  ) {
+  constructor(private paisService: PaisService) {
     this.cargar();
   }
 
@@ -41,17 +37,22 @@ export class PaisList implements AfterViewInit {
   }
 
   cargar(): void {
-    debugger;
     this.isLoading = true;
+
     this.paisService.listar().subscribe({
       next: (rows) => {
         this.cache = rows ?? [];
         this.matData.data = this.cache;
         this.isLoading = false;
       },
-      error: () => {
+      error: async () => {
         this.isLoading = false;
-        this.snack.open('Error cargando países', 'Cerrar', { duration: 2500 });
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error cargando países',
+          confirmButtonText: 'Cerrar',
+        });
       },
     });
   }
@@ -62,27 +63,58 @@ export class PaisList implements AfterViewInit {
       this.matData.data = this.cache;
       return;
     }
-    this.matData.data = this.cache.filter(x =>
+
+    this.matData.data = this.cache.filter((x) =>
       (x.nombre ?? '').toUpperCase().includes(q)
     );
+
+    // opcional: volver a la primera página para que se vean resultados
+    if (this.paginator) this.paginator.firstPage();
   }
 
   limpiar(): void {
     this.matData.data = this.cache;
+    if (this.paginator) this.paginator.firstPage();
   }
 
-  eliminar(id: number): void {
-    if (!confirm(`¿Eliminar país ID ${id}?`)) return;
+  async eliminar(id: number): Promise<void> {
+    const result = await Swal.fire({
+      title: '¿Eliminar país?',
+      text: `Se eliminará el registro ID ${id}. Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+    });
+
+    if (!result.isConfirmed) return;
 
     this.isLoading = true;
+
     this.paisService.eliminar(id).subscribe({
-      next: () => {
-        this.snack.open('País eliminado', 'OK', { duration: 2000 });
+      next: async () => {
+        this.isLoading = false;
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'Eliminado',
+          text: 'País eliminado correctamente',
+          timer: 1300,
+          showConfirmButton: false,
+        });
+
         this.cargar();
       },
-      error: () => {
+      error: async () => {
         this.isLoading = false;
-        this.snack.open('Error al eliminar', 'Cerrar', { duration: 2500 });
+
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al eliminar',
+          confirmButtonText: 'Cerrar',
+        });
       },
     });
   }

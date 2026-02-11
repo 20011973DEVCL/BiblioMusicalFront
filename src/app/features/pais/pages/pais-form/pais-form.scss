@@ -1,0 +1,22 @@
+.form-wrapper {
+  max-width: 520px;
+}
+
+.full {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.back-link {
+  margin-top: 12px;
+}
