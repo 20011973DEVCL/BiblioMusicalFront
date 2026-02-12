@@ -35,6 +35,7 @@ export class PaisService {
   }
 
   obtener(id: number): Observable<PaisRow> {
+    debugger;
     return this.http.get<PaisRow>(`${this.baseUrl}/Obtener/${id}`);
   }
 }

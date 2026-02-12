@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+
 import { PaisService, PaisRow, PaisCreateUpdate } from '../../services/pais.service';
 
 @Component({
@@ -11,6 +14,7 @@ import { PaisService, PaisRow, PaisCreateUpdate } from '../../services/pais.serv
   styleUrls: ['./pais-form.scss'],
 })
 export class PaisForm implements OnInit {
+  private fb = inject(FormBuilder);
 
   isEdit = false;
   isLoading = false;
@@ -21,7 +25,6 @@ export class PaisForm implements OnInit {
   });
 
   constructor(
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private paisService: PaisService
@@ -46,14 +49,14 @@ export class PaisForm implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        Swal.fire('Error', 'No se pudo cargar el país', 'error')
-          .then(() => this.router.navigate(['/pais']));
-      }
+        Swal.fire('Error', 'No se pudo cargar el país', 'error').then(() =>
+          this.router.navigate(['/pais'])
+        );
+      },
     });
   }
 
   guardar(): void {
-
     if (this.form.invalid) {
       Swal.fire('Validación', 'Debe ingresar un nombre válido', 'warning');
       this.form.markAllAsTouched();
@@ -61,14 +64,21 @@ export class PaisForm implements OnInit {
     }
 
     const payload: PaisCreateUpdate = {
-      nombre: (this.form.value.nombre ?? '').trim()
+      nombre: (this.form.value.nombre ?? '').trim(),
     };
 
     this.isLoading = true;
 
-    const req$ = this.isEdit && this.idPais
-      ? this.paisService.actualizar(this.idPais, payload)
-      : this.paisService.crear(payload);
+    // Normalizamos a Observable<void> para evitar el error TS2349
+    let req$: Observable<void>;
+
+    if (this.isEdit && this.idPais) {
+      req$ = this.paisService
+        .actualizar(this.idPais, payload)
+        .pipe(map(() => void 0));
+    } else {
+      req$ = this.paisService.crear(payload).pipe(map(() => void 0));
+    }
 
     req$.subscribe({
       next: () => {
@@ -77,7 +87,7 @@ export class PaisForm implements OnInit {
           icon: 'success',
           title: this.isEdit ? 'País actualizado' : 'País creado',
           timer: 1500,
-          showConfirmButton: false
+          showConfirmButton: false,
         }).then(() => {
           this.router.navigate(['/pais']);
         });
@@ -85,7 +95,7 @@ export class PaisForm implements OnInit {
       error: () => {
         this.isLoading = false;
         Swal.fire('Error', 'No se pudo guardar el país', 'error');
-      }
+      },
     });
   }
 
@@ -93,3 +103,4 @@ export class PaisForm implements OnInit {
     this.router.navigate(['/pais']);
   }
 }
+ 
